@@ -41,6 +41,9 @@ class Room {
         this.turnIndex = 0;
         this.leaderIndex = 0;
         
+        const suits = ['S', 'H', 'D', 'C'];
+        this.trumpSuit = suits[Math.floor(Math.random() * suits.length)];
+        
         const deck = new Deck();
         const cardsPerPlayer = 5;
 

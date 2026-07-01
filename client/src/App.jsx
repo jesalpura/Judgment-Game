@@ -3,7 +3,9 @@ import { useWebSocket } from './hooks/useWebSocket'
 import './styles/globals.css'
 
 function App() {
-  const { gameState, playerId, hand, setHand, trumpSuit, sendEvent } = useWebSocket('ws://localhost:4000');
+  // Use Render backend URL if provided, otherwise default to local development server
+  const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:4000';
+  const { gameState, playerId, hand, setHand, trumpSuit, sendEvent } = useWebSocket(wsUrl);
   
   const [playerName, setPlayerName] = useState('');
   const [roomCodeInput, setRoomCodeInput] = useState('');

@@ -58,6 +58,14 @@ function handleEvent(ws, playerId, message, setCurrentRoom) {
             }
             break;
         }
+        case 'game:restart': {
+            const { roomCode } = payload;
+            const room = roomManager.getRoom(roomCode);
+            if (room && room.hostId === playerId) {
+                room.startGame();
+            }
+            break;
+        }
         case 'bid:submit': {
             const { roomCode, bidAmount } = payload;
             const room = roomManager.getRoom(roomCode);

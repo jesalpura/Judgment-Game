@@ -35,6 +35,12 @@ function App() {
       }
   };
 
+  const handleRestartGame = () => {
+      if (gameState && gameState.code) {
+          sendEvent('game:restart', { roomCode: gameState.code });
+      }
+  };
+
   const handleSubmitBid = () => {
       if (gameState && gameState.code) {
           sendEvent('bid:submit', { roomCode: gameState.code, bidAmount: parseInt(bidInput, 10) });
@@ -179,6 +185,30 @@ function App() {
                               );
                           })}
                       </div>
+                  </div>
+              ) : gameState.status === 'ended' ? (
+                  <div className="ended-area glass-panel" style={{textAlign: 'center', padding: '2rem'}}>
+                      <h3>Round Ended!</h3>
+                      
+                      <div className="results-board" style={{marginTop: '2rem', marginBottom: '2rem'}}>
+                          <h4>Results</h4>
+                          <ul style={{listStyle: 'none', padding: 0}}>
+                              {gameState.players.map(p => (
+                                  <li key={p.id} style={{margin: '0.5rem 0'}}>
+                                      {p.name}: Bid {gameState.bids[p.id] || 0}, Won {gameState.tricksWon[p.id] || 0} tricks
+                                      {gameState.bids[p.id] === gameState.tricksWon[p.id] 
+                                          ? <span style={{color: '#10b981', marginLeft: '10px'}}>✅ Success</span> 
+                                          : <span style={{color: '#ef4444', marginLeft: '10px'}}>❌ Failed</span>}
+                                  </li>
+                              ))}
+                          </ul>
+                      </div>
+
+                      {gameState.hostId === playerId ? (
+                          <button className="btn-primary" onClick={handleRestartGame}>Start Next Round</button>
+                      ) : (
+                          <p>Waiting for host to start the next round...</p>
+                      )}
                   </div>
               ) : (
                   <div className="waiting-area glass-panel">
